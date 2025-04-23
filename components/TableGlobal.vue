@@ -31,6 +31,8 @@ const getItemsToDisplay = computed(() => {
   const max = Math.min(items.length, selectedItemsPerPageOption.value);
   return items.slice(0, max);
 });
+
+const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
 </script>
 
 <template>
@@ -85,6 +87,9 @@ const getItemsToDisplay = computed(() => {
           <option v-for="opt in itemsPerPageOptions" :value="opt">{{ opt }}</option>
         </select>
       </div>
+      <div>
+        1 - {{ getItemsToDisplay.length }} di {{ getTotalNumOfItems }}
+      </div>
     </section>
   </div>
 </template>
@@ -106,6 +111,7 @@ const getItemsToDisplay = computed(() => {
     display: flex;
     align-items: center;
     justify-content: end;
+    gap: 2.4rem;
     padding: var(--default-table-cells-padding);
 
     .t-IPPSelect {
