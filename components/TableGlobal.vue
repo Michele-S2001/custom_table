@@ -23,8 +23,8 @@ const setupHeaderValue = (fn: any, arg: any): any => {
 
 //Config table vars
 const selectedItemsPerPageOption = ref<number>(p.itemsPerPageOptions[0] ?? 10);
-
 // const currentPage = ref<number>(1);
+const currentStartingPoint = ref<number>(0);
 
 //Computed table
 const getItemsToDisplay = computed(() => {
@@ -35,6 +35,17 @@ const getItemsToDisplay = computed(() => {
 });
 
 const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
+
+//Fns table
+const showNextItems = ():void => {
+  console.log("show next");
+  
+  return
+  const temp:number = currentStartingPoint.value + selectedItemsPerPageOption.value;
+  currentStartingPoint.value = temp;
+  //TODO:
+}
+
 </script>
 
 <template>
@@ -91,7 +102,7 @@ const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
       </div>
       <div>
         <!-- TODO: da rivedere -->
-        1 - {{ getItemsToDisplay.length }} di {{ getTotalNumOfItems }}
+        {{ currentStartingPoint + 1 }} - {{ getItemsToDisplay.length }} di {{ getTotalNumOfItems }}
       </div>
       <div class="t-nav-indicators">
         <button>
@@ -99,7 +110,7 @@ const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
             <path :d="$mdi.mdiArrowLeft" />
           </svg>
         </button>
-        <button>
+        <button @click.stop="showNextItems">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path :d="$mdi.mdiArrowRight" />
           </svg>
