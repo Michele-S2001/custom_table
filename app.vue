@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import tableItems from './data/tableItems';
+
 interface Item {
   id: number; 
   person?: string; 
@@ -7,20 +9,7 @@ interface Item {
   role?: string;
 }
 
-const itemsToTable: Item[] = [
-  { id: 1, person: "Alice Johnson", focusArea: "Technology", age: 29, role: "Developer" },
-  { id: 2, person: "Bob Smith", focusArea: "Finance", age: 35, role: "Accountant" },
-  { id: 3, person: undefined, focusArea: "Marketing", age: 42, role: "Manager" },
-  { id: 4, person: "Diana Evans", focusArea: "Healthcare", age: 31, role: "Doctor" },
-  { id: 5, person: "Edward Green", focusArea: "Education", age: 27 },
-  { id: 6, person: "Fiona Harris", focusArea: "Engineering", age: 38, role: "Engineer" },
-  { id: 7, person: "George Lewis", focusArea: "Design", age: 24, role: "Designer" },
-  { id: 8, person: "Hannah Moore", focusArea: "Law", age: 45, role: "Lawyer" },
-  { id: 9, person: "Ian Nelson", focusArea: null, age: 33, role: "Researcher" },
-  { id: 10, person: "Jessica Owens", focusArea: "Business", age: 30, role: "Consultant" },
-  { id: 11, person: "Michele Serafini", focusArea: "Web dev", age:24,  role: "Front-End Jr"},
-  { id: 12, person: "Hammed Baka", age: 67}
-];
+const itemsToTable: Item[] = tableItems;
 
 const headersToTable: Header[] = [
   {
@@ -55,6 +44,7 @@ const headersToTable: Header[] = [
       :items="itemsToTable" 
       :headers="headersToTable"
       :fixedHeader="true"
+      :itemsPerPageOptions="[10, 20, 40]"
     >
       <template #['header.role']="{ item: column }">
         &trade; {{ column.title }}

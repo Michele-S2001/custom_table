@@ -24,6 +24,8 @@ const setupHeaderValue = (fn: any, arg: any): any => {
 //Config table vars
 const selectedItemsPerPageOption = ref<number>(p.itemsPerPageOptions[0] ?? 10);
 
+// const currentPage = ref<number>(1);
+
 //Computed table
 const getItemsToDisplay = computed(() => {
   const items = p.items ?? [];
@@ -88,7 +90,20 @@ const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
         </select>
       </div>
       <div>
+        <!-- TODO: da rivedere -->
         1 - {{ getItemsToDisplay.length }} di {{ getTotalNumOfItems }}
+      </div>
+      <div class="t-nav-indicators">
+        <button>
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path :d="$mdi.mdiArrowLeft" />
+          </svg>
+        </button>
+        <button>
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path :d="$mdi.mdiArrowRight" />
+          </svg>
+        </button>
       </div>
     </section>
   </div>
@@ -111,7 +126,8 @@ const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
     display: flex;
     align-items: center;
     justify-content: end;
-    gap: 2.4rem;
+    gap: 4rem;
+    flex-wrap: wrap;
     padding: var(--default-table-cells-padding);
 
     .t-IPPSelect {
@@ -120,6 +136,30 @@ const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
       padding: 5px 15px 5px 5px;
       border-radius: 0.7rem;
       border-color: var(--grey);
+    }
+
+    .t-nav-indicators {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+
+      button {
+        background-color: var(--white);
+        border: var(--default-table-border);
+        border-radius: 999px;
+        width: 30px;
+        aspect-ratio: 1;
+        cursor: pointer;
+        transition: all 80ms ease-in-out;
+
+        &:hover {
+          background-color: var(--light-grey);
+        }
+
+        &:active {
+          scale: .9;
+        }
+      }
     }
   }
 }
