@@ -33,7 +33,7 @@ const headersToTable: Header[] = [
     value: (arg: Item) => arg?.person?.toUpperCase()
   },
   {
-    title: "Most interested in",
+    title: "Focus area",
     key: "focusArea"
   },
   {
@@ -81,8 +81,6 @@ const headersToTable: Header[] = [
 }
 
 .app_container {
-  display: grid;
-  place-items: center;
-  margin-top: 4rem;
+  margin: 2rem 5rem;
 }
 </style>

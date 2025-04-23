@@ -37,7 +37,7 @@ const getItemsToDisplay = computed(() => {
   <div class="t-main">
     <section class="t-wrapper">
       <table>
-        <thead :class="{ 'fixedHeader': fixedHeader}" v-if="headers">
+        <thead :class="{ 'fixedHeader': fixedHeader }" v-if="headers">
           <tr>
             <th 
               v-for="(header, idx) in headers" 
@@ -77,6 +77,7 @@ const getItemsToDisplay = computed(() => {
         <!-- NOTE: per semplificare le cose, questo per ora non è un componente -->
         <label for="itemsPerPage-select">Elementi per pagina: </label>
         <select 
+          class="t-IPPSelect"
           v-model="selectedItemsPerPageOption" 
           name="itemsPerPageOptions" 
           id="itemsPerPage-select"
@@ -94,10 +95,11 @@ const getItemsToDisplay = computed(() => {
   font-size: 1.4rem;
   border: var(--default-table-border);
   border-radius: var(--default-table-border-radius);
+  overflow-x: auto;
 
   .t-wrapper {
     max-height: 550px;
-    overflow-y: auto;
+    overflow: auto;
   }
 
   .t-toolbar {
@@ -105,12 +107,21 @@ const getItemsToDisplay = computed(() => {
     align-items: center;
     justify-content: end;
     padding: var(--default-table-cells-padding);
+
+    .t-IPPSelect {
+      font-size: inherit;
+      font-family: inherit;
+      padding: 5px 15px 5px 5px;
+      border-radius: 0.7rem;
+      border-color: var(--grey);
+    }
   }
 }
 
 table {
   position: relative;
   border-spacing: 0;
+  width: 100%;
 
   thead {
     background-color: var(--white);
