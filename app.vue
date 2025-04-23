@@ -18,7 +18,8 @@ const itemsToTable: Item[] = [
   { id: 8, person: "Hannah Moore", focusArea: "Law", age: 45, role: "Lawyer" },
   { id: 9, person: "Ian Nelson", focusArea: null, age: 33, role: "Researcher" },
   { id: 10, person: "Jessica Owens", focusArea: "Business", age: 30, role: "Consultant" },
-  { id: 11, person: "Michele Serafini", focusArea: "Web dev", age:24,  role: "Front-End Jr"}
+  { id: 11, person: "Michele Serafini", focusArea: "Web dev", age:24,  role: "Front-End Jr"},
+  { id: 12, person: "Hammed Baka", age: 67}
 ];
 
 const headersToTable: Header[] = [
@@ -53,6 +54,7 @@ const headersToTable: Header[] = [
     <TableGlobal 
       :items="itemsToTable" 
       :headers="headersToTable"
+      :fixedHeader="true"
     >
       <template #['header.role']="{ item: column }">
         &trade; {{ column.title }}

@@ -1,7 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 :root {
-  --default-table-border: 1px solid grey;
+  /* colors */
+  --grey: #b1b1b1;
+  --white: #FFFFFF;
+
+  /* table */
+  --default-table-border: 1px solid var(--grey);
   --default-table-border-radius: 20px;
   --default-table-cells-min-width: 150px;
   --default-table-cells-padding: 10px 20px;

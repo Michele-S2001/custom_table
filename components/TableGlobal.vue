@@ -2,11 +2,13 @@
 interface	props {
   items?: any[];
   headers: Header[];
-  itemsPerPageOptions?: number[]
+  itemsPerPageOptions?: number[],
+  fixedHeader?: boolean
 }
 
 const p = withDefaults(defineProps<props>(), {
-  itemsPerPageOptions: () => [10, 25, 50]
+  itemsPerPageOptions: () => [10, 25, 50],
+  fixedHeader: () => false
 });
 
 //NOTE: questa gestione è sicuramente migliorabile
@@ -32,77 +34,90 @@ const getItemsToDisplay = computed(() => {
 </script>
 
 <template>
-  <table>
-    <thead v-if="headers">
-      <tr>
-        <th 
-          v-for="(header, idx) in headers" 
-          :key="header.key"  
-          scope="col"
-          :style="`text-align: ${header.align ?? 'left'}`"
-        >
-          <slot :name="`header.${header.key}`" :item="header" :index="idx">
-            {{ header?.title ?? '' }}
-          </slot>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <template v-if="!!items && items?.length > 0">
-        <tr v-for="(item, idx) in getItemsToDisplay" :key="idx">
-          <td 
-            v-for="(header, idx) in headers" 
-            :key="header.key"
-            :style="`text-align: ${header.align ?? 'left'}`"
-          >
-            <slot :name="`item.${header.key}`" :item="item" :index="idx">
-              {{ setupHeaderValue(header?.value, item) ?? item?.[header.key] ?? '-' }}
-            </slot>
-          </td>
-        </tr>
-      </template>
-
-      <tr v-else>
-        <td :colspan="headers.length" style="text-align: center;">Nessun elemento disponibile</td>
-      </tr>
-    </tbody>
-    <tfoot v-if="items?.length && items?.length > 10">
-      <tr>
-        <td :colspan="headers.length">
-          <div>
-            <!-- NOTE: per semplificare le cose, questo per ora non è un componente -->
-            <label for="itemsPerPage-select">Elementi per pagina: </label>
-            <select 
-              v-model="selectedItemsPerPageOption" 
-              name="itemsPerPageOptions" 
-              id="itemsPerPage-select"
+  <div class="t-main">
+    <section class="t-wrapper">
+      <table>
+        <thead :class="{ 'fixedHeader': fixedHeader}" v-if="headers">
+          <tr>
+            <th 
+              v-for="(header, idx) in headers" 
+              :key="header.key"  
+              scope="col"
+              :style="`text-align: ${header.align ?? 'left'}`"
             >
-              <option v-for="opt in itemsPerPageOptions" :value="opt">{{ opt }}</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-    </tfoot>
-  </table>
+              <slot :name="`header.${header.key}`" :item="header" :index="idx">
+                {{ header?.title ?? '' }}
+              </slot>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-if="!!items && items?.length > 0">
+            <tr v-for="(item, idx) in getItemsToDisplay" :key="idx">
+              <td 
+                v-for="(header, idx) in headers" 
+                :key="header.key"
+                :style="`text-align: ${header.align ?? 'left'}`"
+              >
+                <slot :name="`item.${header.key}`" :item="item" :index="idx">
+                  {{ setupHeaderValue(header?.value, item) ?? item?.[header.key] ?? '-' }}
+                </slot>
+              </td>
+            </tr>
+          </template>
+    
+          <tr v-else>
+            <td :colspan="headers.length" style="text-align: center;">Nessun elemento disponibile</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="t-toolbar" v-if="items?.length && items?.length > 10"> 
+      <div>
+        <!-- NOTE: per semplificare le cose, questo per ora non è un componente -->
+        <label for="itemsPerPage-select">Elementi per pagina: </label>
+        <select 
+          v-model="selectedItemsPerPageOption" 
+          name="itemsPerPageOptions" 
+          id="itemsPerPage-select"
+        >
+          <option v-for="opt in itemsPerPageOptions" :value="opt">{{ opt }}</option>
+        </select>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-table {
-  border-spacing: 0;
+.t-main {
+  padding: 1.8rem;
   font-size: 1.4rem;
   border: var(--default-table-border);
   border-radius: var(--default-table-border-radius);
 
-  & tr:not(:last-child) > td {    
-    border-bottom: var(--default-table-border);
+  .t-wrapper {
+    max-height: 550px;
+    overflow-y: auto;
   }
 
-  tfoot > tr:first-child{
+  .t-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: end;
     padding: var(--default-table-cells-padding);
-    
-    & > td {
-      text-align: right;
-    }
+  }
+}
+
+table {
+  position: relative;
+  border-spacing: 0;
+
+  thead {
+    background-color: var(--white);
+  }
+
+  & tr:not(:last-child) > td {    
+    border-bottom: var(--default-table-border);
   }
 }
 
@@ -119,5 +134,11 @@ th, td {
   min-width: var(--default-table-cells-min-width);
 }
 
-
+.fixedHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
 </style>
