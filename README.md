@@ -17,15 +17,18 @@ A simplified Vue 3 table component inspired by Vuetify's v-table, focusing on:
 ## Usage example
 ```
 <TableGlobal 
-  :items="itemsToTable" 
-  :headers="headersToTable"
+  :items="allTableItems" 
+  :headers="tableHeaders"
   :fixedHeader="true"
   :itemsPerPageOptions="[10, 20, 40]"
 >
   <template #['item.agePerson']="{ item }">
-    <strong>{{ agePerson }}</strong>
+    <strong>{{ age }}</strong>
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path :d="$mdi.mdiAccount" />
+    </svg>
   </template>
 </TableGlobal>
 ```
 
-You can find a more articulated example in the App.vue
+You can find the full example in the App.vue
