@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { mdiArrowCollapseLeft, mdiArrowLeft, mdiArrowRight, mdiArrowCollapseRight } from '@mdi/js';
+
 interface	props {
   items?: any[];
   headers: Header[];
@@ -59,6 +61,30 @@ const showNextItems = ():void => { currentPage.value = Math.min(currentPage.valu
 const showPrevItems = ():void => { currentPage.value = Math.max(currentPage.value - 1, 1); };
 const goToFirstPage = ():void => { currentPage.value = 1; };
 const goToLastPage = ():void => { currentPage.value = totalPages.value; };
+
+//Navigation arrows
+const navigationArrows = ref<navigationArrow[]>([
+  {
+    icon: mdiArrowCollapseLeft,
+    action: goToFirstPage,
+    disabled: computed(() => currentPage.value === 1)
+  },
+  {
+    icon: mdiArrowLeft,
+    action: showPrevItems,
+    disabled: computed(() => currentPage.value === 1)
+  },
+  {
+    icon: mdiArrowRight,
+    action: showNextItems,
+    disabled: computed(() => currentPage.value === totalPages.value)
+  },
+  {
+    icon: mdiArrowCollapseRight,
+    action: goToLastPage,
+    disabled: computed(() => currentPage.value === totalPages.value)
+  },
+]);
 
 //watchers
 watch(selectedItemsPerPageOption, () => {
@@ -122,24 +148,15 @@ watch(selectedItemsPerPageOption, () => {
         {{ pageRangeText }}
       </div>
       <div class="t-nav-indicators">
-        <button @click.stop="goToFirstPage" :disabled="currentPage === 1">
+        <button
+          v-for="navArrow in navigationArrows"
+          :key="navArrow.icon"
+          @click.stop="navArrow.action"
+          :disabled="navArrow.disabled" 
+          :class="{ 'disabled': navArrow.disabled }"
+        >
           <svg width="24" height="24" viewBox="0 0 24 24">
-            <path :d="$mdi.mdiArrowCollapseLeft" />
-          </svg>
-        </button>
-        <button @click.stop="showPrevItems" :disabled="currentPage === 1">
-          <svg width="24" height="24" viewBox="0 0 24 24">
-            <path :d="$mdi.mdiArrowLeft" />
-          </svg>
-        </button>
-        <button @click.stop="showNextItems" :disabled="currentPage === totalPages">
-          <svg width="24" height="24" viewBox="0 0 24 24">
-            <path :d="$mdi.mdiArrowRight" />
-          </svg>
-        </button>
-        <button @click.stop="goToLastPage" :disabled="currentPage === totalPages">
-          <svg width="24" height="24" viewBox="0 0 24 24">
-            <path :d="$mdi.mdiArrowCollapseRight" />
+            <path :d="navArrow.icon" />
           </svg>
         </button>
       </div>
@@ -190,7 +207,12 @@ watch(selectedItemsPerPageOption, () => {
         cursor: pointer;
         transition: all 80ms ease-in-out;
 
-        &:hover {
+        &.disabled {
+          fill: var(--light-grey);
+          cursor: auto;
+        }
+
+        &:hover:not(.disabled) {
           background-color: var(--light-grey);
         }
 

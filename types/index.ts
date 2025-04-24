@@ -10,7 +10,11 @@ declare global {
     value?: any;
   }
 
-  //Istance of the table
-
+  interface navigationArrow {
+    icon: string,
+    action: () => void,
+    disabled: ComputedRef<boolean>
+  }
+  
 }
 
