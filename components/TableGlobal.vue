@@ -13,7 +13,6 @@ const p = withDefaults(defineProps<props>(), {
   fixedHeader: () => false
 });
 
-//NOTE: questa gestione è sicuramente migliorabile
 const setupHeaderValue = (fn: any, arg: any): any => {
   if(!fn) return null;
   if(typeof fn === 'function') {
