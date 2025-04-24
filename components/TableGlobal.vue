@@ -55,8 +55,10 @@ const pageRangeText = computed(() => {
 });
 
 //Fns table
-const showNextItems = () => currentPage.value = Math.min(currentPage.value + 1, totalPages.value);
-const showPrevItems = () => currentPage.value = Math.max(currentPage.value - 1, 1);
+const showNextItems = ():void => { currentPage.value = Math.min(currentPage.value + 1, totalPages.value); };
+const showPrevItems = ():void => { currentPage.value = Math.max(currentPage.value - 1, 1); };
+const goToFirstPage = ():void => { currentPage.value = 1; };
+const goToLastPage = ():void => { currentPage.value = totalPages.value; };
 
 //watchers
 watch(selectedItemsPerPageOption, () => {
@@ -120,14 +122,24 @@ watch(selectedItemsPerPageOption, () => {
         {{ pageRangeText }}
       </div>
       <div class="t-nav-indicators">
+        <button @click.stop="goToFirstPage" :disabled="currentPage === 1">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path :d="$mdi.mdiArrowCollapseLeft" />
+          </svg>
+        </button>
         <button @click.stop="showPrevItems" :disabled="currentPage === 1">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path :d="$mdi.mdiArrowLeft" />
           </svg>
         </button>
-        <button @click.stop="showNextItems">
+        <button @click.stop="showNextItems" :disabled="currentPage === totalPages">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path :d="$mdi.mdiArrowRight" />
+          </svg>
+        </button>
+        <button @click.stop="goToLastPage" :disabled="currentPage === totalPages">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path :d="$mdi.mdiArrowCollapseRight" />
           </svg>
         </button>
       </div>
@@ -171,8 +183,8 @@ watch(selectedItemsPerPageOption, () => {
 
       button {
         background-color: var(--white);
-        border: var(--default-table-border);
-        border-radius: 999px;
+        border: none;
+        border-radius: 1rem;
         width: 30px;
         aspect-ratio: 1;
         cursor: pointer;
