@@ -31,23 +31,23 @@ const getItemsToDisplay = computed(() => {
   const items = p.items ?? [];
   if (items.length === 0) return items;
   
-  const start = (currentPage.value - 1) * selectedItemsPerPageOption.value;
-  const end = start + selectedItemsPerPageOption.value;
+  const start:number = (currentPage.value - 1) * selectedItemsPerPageOption.value;
+  const end:number = start + selectedItemsPerPageOption.value;
   
   return items.slice(start, end);
 });
 
-const totalPages = computed(() => 
+const totalPages = computed<number>(() => 
   Math.max(1, Math.ceil(getTotalNumOfItems.value / selectedItemsPerPageOption.value))
 );
 
 const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
 
-const pageRangeText = computed(() => {
+const pageRangeText = computed<string>(() => {
   if (getTotalNumOfItems.value === 0) return '0-0 di 0';
   
-  const start = (currentPage.value - 1) * selectedItemsPerPageOption.value + 1;
-  const end = Math.min(
+  const start:number = (currentPage.value - 1) * selectedItemsPerPageOption.value + 1;
+  const end:number = Math.min(
     currentPage.value * selectedItemsPerPageOption.value,
     getTotalNumOfItems.value
   );
@@ -66,22 +66,22 @@ const navigationArrows = ref<navigationArrow[]>([
   {
     icon: mdiArrowCollapseLeft,
     action: goToFirstPage,
-    disabled: computed(() => currentPage.value === 1)
+    disabled: computed<boolean>(() => currentPage.value === 1)
   },
   {
     icon: mdiArrowLeft,
     action: showPrevItems,
-    disabled: computed(() => currentPage.value === 1)
+    disabled: computed<boolean>(() => currentPage.value === 1)
   },
   {
     icon: mdiArrowRight,
     action: showNextItems,
-    disabled: computed(() => currentPage.value === totalPages.value)
+    disabled: computed<boolean>(() => currentPage.value === totalPages.value)
   },
   {
     icon: mdiArrowCollapseRight,
     action: goToLastPage,
-    disabled: computed(() => currentPage.value === totalPages.value)
+    disabled: computed<boolean>(() => currentPage.value === totalPages.value)
   },
 ]);
 
