@@ -23,28 +23,45 @@ const setupHeaderValue = (fn: any, arg: any): any => {
 
 //Config table vars
 const selectedItemsPerPageOption = ref<number>(p.itemsPerPageOptions[0] ?? 10);
-// const currentPage = ref<number>(1);
-const currentStartingPoint = ref<number>(0);
+const currentPage = ref<number>(1);
 
 //Computed table
 const getItemsToDisplay = computed(() => {
   const items = p.items ?? [];
-  if(items.length === 0) return items;
-  const max = Math.min(items.length, selectedItemsPerPageOption.value);
-  return items.slice(0, max);
+  if (items.length === 0) return items;
+  
+  const start = (currentPage.value - 1) * selectedItemsPerPageOption.value;
+  const end = start + selectedItemsPerPageOption.value;
+  
+  return items.slice(start, end);
 });
+
+const totalPages = computed(() => 
+  Math.max(1, Math.ceil(getTotalNumOfItems.value / selectedItemsPerPageOption.value))
+);
 
 const getTotalNumOfItems = computed<number>(() => p.items?.length ?? 0);
 
-//Fns table
-const showNextItems = ():void => {
-  console.log("show next");
+const pageRangeText = computed(() => {
+  if (getTotalNumOfItems.value === 0) return '0-0 di 0';
   
-  return
-  const temp:number = currentStartingPoint.value + selectedItemsPerPageOption.value;
-  currentStartingPoint.value = temp;
-  //TODO:
-}
+  const start = (currentPage.value - 1) * selectedItemsPerPageOption.value + 1;
+  const end = Math.min(
+    currentPage.value * selectedItemsPerPageOption.value,
+    getTotalNumOfItems.value
+  );
+  
+  return `${start}-${end} di ${getTotalNumOfItems.value}`;
+});
+
+//Fns table
+const showNextItems = () => currentPage.value = Math.min(currentPage.value + 1, totalPages.value);
+const showPrevItems = () => currentPage.value = Math.max(currentPage.value - 1, 1);
+
+//watchers
+watch(selectedItemsPerPageOption, () => {
+  currentPage.value = 1;
+});
 
 </script>
 
@@ -89,7 +106,6 @@ const showNextItems = ():void => {
     </section>
     <section class="t-toolbar" v-if="items?.length && items?.length > 10"> 
       <div>
-        <!-- NOTE: per semplificare le cose, questo per ora non è un componente -->
         <label for="itemsPerPage-select">Elementi per pagina: </label>
         <select 
           class="t-IPPSelect"
@@ -101,11 +117,10 @@ const showNextItems = ():void => {
         </select>
       </div>
       <div>
-        <!-- TODO: da rivedere -->
-        {{ currentStartingPoint + 1 }} - {{ getItemsToDisplay.length }} di {{ getTotalNumOfItems }}
+        {{ pageRangeText }}
       </div>
       <div class="t-nav-indicators">
-        <button>
+        <button @click.stop="showPrevItems" :disabled="currentPage === 1">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path :d="$mdi.mdiArrowLeft" />
           </svg>
