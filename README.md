@@ -1,75 +1,31 @@
-# Nuxt Minimal Starter
+# Vuetify-like Table Experiment
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Overview
+A simplified Vue 3 table component inspired by Vuetify's v-table, focusing on:
+- Pagination
+- Slot-based customization
+- Responsive design
+- TypeScript support
 
-## Setup
+## Features
+✔ Dynamic pagination  
+✔ Customizable headers/cells via slots  
+✔ Fixed headers with scrollable body  
+✔ Type-safe props  
+... and so on
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+## Usage example
+```
+<TableGlobal 
+  :items="itemsToTable" 
+  :headers="headersToTable"
+  :fixedHeader="true"
+  :itemsPerPageOptions="[10, 20, 40]"
+>
+  <template #['item.agePerson']="{ item }">
+    <strong>{{ agePerson }}</strong>
+  </template>
+</TableGlobal>
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+You can find a more articulated example in the App.vue
