@@ -2,10 +2,11 @@
 import { mdiArrowCollapseLeft, mdiArrowLeft, mdiArrowRight, mdiArrowCollapseRight } from '@mdi/js';
 
 interface	props {
+  title?: string;
   items?: any[];
   headers: Header[];
-  itemsPerPageOptions?: number[],
-  fixedHeader?: boolean
+  itemsPerPageOptions?: number[];
+  fixedHeader?: boolean;
 }
 
 const p = withDefaults(defineProps<props>(), {
@@ -93,7 +94,10 @@ watch(selectedItemsPerPageOption, () => {
 </script>
 
 <template>
-  <div class="t-main">
+  <article class="t-main">
+    <header class="t-top">
+      <h3 class="t-title" v-if="title">{{ title }}</h3>
+    </header>
     <section class="t-wrapper">
       <table>
         <thead :class="{ 'fixedHeader': fixedHeader }" v-if="headers">
@@ -160,7 +164,7 @@ watch(selectedItemsPerPageOption, () => {
         </button>
       </div>
     </section>
-  </div>
+  </article>
 </template>
 
 <style scoped>
@@ -170,6 +174,14 @@ watch(selectedItemsPerPageOption, () => {
   border: var(--default-table-border);
   border-radius: var(--default-table-border-radius);
   overflow-x: auto;
+
+  .t-top {
+    margin-bottom: 1rem;
+
+    .t-title {
+      font-size: 2rem;
+    }
+  }
 
   .t-wrapper {
     max-height: 550px;

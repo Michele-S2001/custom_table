@@ -41,6 +41,7 @@ const headersToTable: Header[] = [
 <template>
   <div class="app_container">
     <TableGlobal 
+      title="Le persone"
       :items="itemsToTable" 
       :headers="headersToTable"
       :fixedHeader="true"
