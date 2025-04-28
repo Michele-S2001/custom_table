@@ -27,7 +27,7 @@ const selectedItemsPerPageOption = ref<number>(p.itemsPerPageOptions[0] ?? 10);
 const currentPage = ref<number>(1);
 
 //Computed table
-const getItemsToDisplay = computed(() => {
+const getItemsToDisplay = computed<any[]>(() => {
   const items = p.items ?? [];
   if (items.length === 0) return items;
   
